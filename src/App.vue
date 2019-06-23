@@ -3,7 +3,7 @@
     <nav class="navbar is-white topNav">
       <div class="container">
         <div class="navbar-brand">
-          <h1>Activity Planner</h1>
+          <h1>{{ fullAppName }}</h1>
         </div>
       </div>
     </nav>
@@ -74,6 +74,10 @@
               :activity="activity"
               :key="activity.id"
             ></ActivityItem>
+            <div class="activity-length">
+              Currenly {{ activityLength }} activities
+            </div>
+            <div class="activity-motivation">{{ activityMotivation }}</div>
           </div>
         </div>
       </div>
@@ -90,6 +94,8 @@ export default {
   components: { ActivityItem },
   data() {
     return {
+      creator: 'Filip Jerga',
+      appName: 'Activity Planner',
       isFormDisplayed: false,
       message: 'Hello Vue!',
       titleMessage: 'Title Message Vue!!!!!',
@@ -132,10 +138,36 @@ export default {
   destroyed() {
     console.log('destroyed called!');
   },
+  watch: {
+    creator(val) {
+      console.log(val);
+      debugger;
+      return this.appName + ' by ' + val;
+    },
+    appName(val) {
+      console.log(val);
+      debugger;
+      return val + ' by ' + this.creator;
+    },
+  },
   computed: {
     isFormValid() {
-      console.log('calling is FormValid!!!');
       return this.newActivity.title && this.newActivity.notes;
+    },
+    fullAppName() {
+      return this.appName + ' by ' + this.creator;
+    },
+    activityLength() {
+      return Object.keys(this.activities).length;
+    },
+    activityMotivation() {
+      if (this.activityLength && this.activityLength < 5) {
+        return 'Nice to see some activities (:';
+      } else if (this.activityLength >= 5) {
+        return 'So many activities! Good Job!';
+      } else {
+        return 'No activities, so sad :(';
+      }
     },
   },
   methods: {
@@ -166,6 +198,12 @@ body {
 }
 footer {
   background-color: #f2f6fa !important;
+}
+.activity-motivation {
+  float: right;
+}
+.activity-length {
+  display: inline-block;
 }
 .example-wrapper {
   margin-left: 30px;
