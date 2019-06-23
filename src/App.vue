@@ -21,51 +21,7 @@
     <section class="container">
       <div class="columns">
         <div class="column is-3">
-          <a
-            v-if="!isFormDisplayed"
-            @click="toggleFormDisplay"
-            class="button is-primary is-block is-alt is-large"
-            href="#"
-            >New Activity</a
-          >
-          <div v-if="isFormDisplayed" class="create-form">
-            <h2>Create Activity</h2>
-            <form :disabled="!isFormValid">
-              <div class="field">
-                <label class="label">Title</label>
-                <div class="control">
-                  <input
-                    v-model="newActivity.title"
-                    class="input"
-                    type="text"
-                    placeholder="Read a Book"
-                  />
-                </div>
-              </div>
-              <div class="field">
-                <label class="label">Notes</label>
-                <div class="control">
-                  <textarea
-                    v-model="newActivity.notes"
-                    class="textarea"
-                    placeholder="Write some notes here"
-                  ></textarea>
-                </div>
-              </div>
-              <div class="field is-grouped">
-                <div class="control">
-                  <button @click="createActivity" class="button is-link">
-                    Create Activity
-                  </button>
-                </div>
-                <div class="control">
-                  <button class="button is-text" @click="toggleFormDisplay">
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
+          <ActivityCreate :categories="categories" />
         </div>
         <div class="column is-9">
           <div class="box content">
@@ -86,24 +42,20 @@
 </template>
 
 <script>
-import ActivityItem from './components/ActivityItem';
 import { fetchActivities, fetchUser, fetchCategories } from '@/api';
+import ActivityItem from './components/ActivityItem';
+import ActivityCreate from '@/components/ActivityCreate';
 
 export default {
   name: 'app',
-  components: { ActivityItem },
+  components: { ActivityItem, ActivityCreate },
   data() {
     return {
       creator: 'Filip Jerga',
       appName: 'Activity Planner',
-      isFormDisplayed: false,
       message: 'Hello Vue!',
       titleMessage: 'Title Message Vue!!!!!',
       isTextDisplayed: true,
-      newActivity: {
-        title: '',
-        notes: '',
-      },
       items: { 1: { name: 'Filip' }, 2: { name: 'John' } },
       user: {},
       activities: {},
@@ -151,9 +103,6 @@ export default {
     },
   },
   computed: {
-    isFormValid() {
-      return this.newActivity.title && this.newActivity.notes;
-    },
     fullAppName() {
       return this.appName + ' by ' + this.creator;
     },
@@ -171,12 +120,6 @@ export default {
     },
   },
   methods: {
-    toggleTextDisplay() {
-      this.isTextDisplayed = !this.isTextDisplayed;
-    },
-    toggleFormDisplay() {
-      this.isFormDisplayed = !this.isFormDisplayed;
-    },
     createActivity() {
       console.log(this.newActivity);
     },
