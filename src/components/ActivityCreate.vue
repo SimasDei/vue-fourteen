@@ -48,13 +48,13 @@
             <button
               class="button is-link"
               :disabled="!isFormValid"
-              @click="createActivity"
+              @click.prevent="createActivity"
             >
               Create Activity
             </button>
           </div>
           <div class="control">
-            <button class="button is-text" @click="toggleFormDisplay">
+            <button class="button is-text" @click.prevent="toggleFormDisplay">
               Cancel
             </button>
           </div>
@@ -65,6 +65,8 @@
 </template>
 
 <script>
+import { createActivity } from '@/api';
+
 export default {
   props: {
     categories: {
@@ -92,7 +94,9 @@ export default {
       this.isFormDisplayed = !this.isFormDisplayed;
     },
     createActivity() {
-      console.log(this.newActivity);
+      createActivityAPI(this.newActivity).then(activity => {
+        this.$emit('activityCreated', { ...activity });
+      });
     },
   },
 };

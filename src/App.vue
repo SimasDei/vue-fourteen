@@ -21,7 +21,10 @@
     <section class="container">
       <div class="columns">
         <div class="column is-3">
-          <ActivityCreate :categories="categories" />
+          <ActivityCreate
+            @activityCreated="addActivity"
+            :categories="categories"
+          />
         </div>
         <div class="column is-9">
           <div class="box content">
@@ -120,8 +123,8 @@ export default {
     },
   },
   methods: {
-    createActivity() {
-      console.log(this.newActivity);
+    addActivity(newActivity) {
+      console.log(newActivity);
     },
   },
 };

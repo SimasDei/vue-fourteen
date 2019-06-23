@@ -24,6 +24,20 @@ export const fetchCategories = () => ({
   1546969225: { text: 'movies', id: '1546969225' },
 });
 
+const generateUid = () => Math.floor(new Date() * Math.random());
+
+export const createActivityAPI = (tivity) => {
+  const activity = tivity;
+  activity.id = generateUid();
+  activity.progress = 0;
+  activity.createdAt = new Date();
+  activity.updatedAt = new Date();
+
+  return new Promise((resolve) => {
+    resolve(activity);
+  });
+};
+
 export const fetchUser = () => ({
   name: 'Filip Jerga',
   id: '-Aj34jknvncx98812',
