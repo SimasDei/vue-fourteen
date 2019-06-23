@@ -30,7 +30,7 @@
           >
           <div v-if="isFormDisplayed" class="create-form">
             <h2>Create Activity</h2>
-            <form>
+            <form :disabled="!isFormValid">
               <div class="field">
                 <label class="label">Title</label>
                 <div class="control">
@@ -83,7 +83,7 @@
 
 <script>
 import ActivityItem from './components/ActivityItem';
-import { fetchActivities } from '@/api';
+import { fetchActivities, fetchUser, fetchCategories } from '@/api';
 
 export default {
   name: 'app',
@@ -99,41 +99,44 @@ export default {
         notes: '',
       },
       items: { 1: { name: 'Filip' }, 2: { name: 'John' } },
-      user: {
-        name: 'Filip Jerga',
-        id: '-Aj34jknvncx98812',
-      },
-      activities: {
-      },
-      categories: {
-        '1546969049': { text: 'books' },
-        '1546969225': { text: 'movies' },
-      },
+      user: {},
+      activities: {},
+      categories: {},
     };
   },
-  beforeCreate () {
-    console.log('beforeCreate called!')
+  beforeCreate() {
+    console.log('beforeCreate called!');
   },
-  created () {
-    this.activities = fetchActivities()
+  created() {
+    this.activities = fetchActivities();
+    this.user = fetchUser();
+    this.categories = fetchCategories();
+    console.log(this.user);
+    console.log(this.categories);
   },
-  beforeMount () {
-    console.log('beforeMount called!')
+  beforeMount() {
+    console.log('beforeMount called!');
   },
-  mounted () {
-    console.log('mounted called!')
+  mounted() {
+    console.log('mounted called!');
   },
-  beforeUpdate () {
-    console.log('beforeUpdate called!')
+  beforeUpdate() {
+    console.log('beforeUpdate called!');
   },
-  updated () {
-    console.log('updated called!')
+  updated() {
+    console.log('updated called!');
   },
-  beforeDestroy () {
-    console.log('beforeDestroy called!')
+  beforeDestroy() {
+    console.log('beforeDestroy called!');
   },
-  destroyed () {
-    console.log('destroyed called!')
+  destroyed() {
+    console.log('destroyed called!');
+  },
+  computed: {
+    isFormValid() {
+      console.log('calling is FormValid!!!');
+      return this.newActivity.title && this.newActivity.notes;
+    },
   },
   methods: {
     toggleTextDisplay() {
