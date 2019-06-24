@@ -1,4 +1,4 @@
-export const fetchActivities = () => ({
+const activities = {
   1546968934: {
     id: '1546968934',
     title: 'Learn Vue.js',
@@ -17,6 +17,12 @@ export const fetchActivities = () => ({
     createdAt: 1546969144391,
     updatedAt: 1546969144391,
   },
+};
+
+export const fetchActivities = () => new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve(activities);
+  }, 2000);
 });
 
 export const fetchCategories = () => ({
