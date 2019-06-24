@@ -19,7 +19,7 @@ const activities = {
   },
 };
 
-export const fetchActivities = () => new Promise((resolve, reject) => {
+export const fetchActivities = () => new Promise((resolve) => {
   setTimeout(() => {
     resolve(activities);
   }, 2000);

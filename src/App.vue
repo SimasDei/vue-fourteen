@@ -7,17 +7,7 @@
         </div>
       </div>
     </nav>
-    <nav class="navbar is-white">
-      <div class="container">
-        <div class="navbar-menu">
-          <div class="navbar-start">
-            <a class="navbar-item is-active" href="#">Newest</a>
-            <a class="navbar-item" href="#">In Progress</a>
-            <a class="navbar-item" href="#">Finished</a>
-          </div>
-        </div>
-      </div>
-    </nav>
+    <TheNavbar />
     <section class="container">
       <div class="columns">
         <div class="column is-3">
@@ -27,16 +17,29 @@
           />
         </div>
         <div class="column is-9">
-          <div class="box content">
-            <ActivityItem
-              v-for="activity in activities"
-              :activity="activity"
-              :key="activity.id"
-            ></ActivityItem>
-            <div class="activity-length">
-              Currenly {{ activityLength }} activities
+          <div
+            class="box content"
+            :class="{ fetching: isFetching, 'has-error': error }"
+          >
+            <div v-if="error">
+              {{ error }}
             </div>
-            <div class="activity-motivation">{{ activityMotivation }}</div>
+            <div v-else>
+              <div v-if="isFetching">
+                Loading ...
+              </div>
+              <ActivityItem
+                v-for="activity in activities"
+                :key="activity.id"
+                :activity="activity"
+              />
+            </div>
+            <div v-if="!isFetching">
+              <div class="activity-length">
+                Currenly {{ activityLength }} activities
+              </div>
+              <div class="activity-motivation">{{ activityMotivation }}</div>
+            </div>
           </div>
         </div>
       </div>
@@ -48,10 +51,11 @@
 import { fetchActivities, fetchUser, fetchCategories } from '@/api';
 import ActivityItem from './components/ActivityItem';
 import ActivityCreate from '@/components/ActivityCreate';
+import TheNavbar from '@/components/TheNavbar';
 
 export default {
   name: 'app',
-  components: { ActivityItem, ActivityCreate },
+  components: { ActivityItem, ActivityCreate, TheNavbar },
   data() {
     return {
       creator: 'Filip Jerga',
@@ -59,7 +63,8 @@ export default {
       message: 'Hello Vue!',
       titleMessage: 'Title Message Vue!!!!!',
       isTextDisplayed: true,
-      items: { 1: { name: 'Filip' }, 2: { name: 'John' } },
+      isFetching: false,
+      error: null,
       user: {},
       activities: {},
       categories: {},
@@ -69,10 +74,9 @@ export default {
     console.log('beforeCreate called!');
   },
   created() {
-    fetchActivities()
-      .then(activities => {
-        this.activities = activities
-      })
+    fetchActivities().then(activities => {
+      this.activities = activities;
+    });
     this.user = fetchUser();
     this.categories = fetchCategories();
     console.log(this.user);
@@ -144,6 +148,12 @@ html,
 body {
   font-family: 'Open Sans', serif;
   background: #f2f6fa;
+}
+.fetching {
+  border: 2px solid orange;
+}
+.has-error {
+  border: 2px solid red;
 }
 footer {
   background-color: #f2f6fa !important;
