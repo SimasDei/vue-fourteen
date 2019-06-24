@@ -223,4 +223,21 @@ article.post:last-child {
   font-size: 31px;
   padding: 20px;
 }
+.activity-title {
+  margin-bottom: 5px;
+  display: inline-block;
+}
+.activity-settings {
+  float: right;
+  font-size: 22px;
+  &:hover {
+    cursor: pointer;
+  }
+}
+.activity-controll {
+  margin: 20px 0 0 0;
+  a {
+    margin-right: 5px;
+  }
+}
 </style>
